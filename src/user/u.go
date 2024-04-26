@@ -2,11 +2,11 @@ package user
 
 import (
 	"context"
-	tidctx "github.com/chnyangzhen/kago-fly/pkg/context"
 	"github.com/chnyangzhen/kago-fly/pkg/helper"
 	"github.com/chnyangzhen/kago-fly/pkg/logger"
 	"github.com/chnyangzhen/kago-fly/pkg/response"
 	"github.com/chnyangzhen/kago-fly/pkg/server"
+	"github.com/chnyangzhen/kago-fly/pkg/tidctx"
 	"github.com/labstack/echo/v4"
 )
 
