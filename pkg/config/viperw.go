@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
+	"github.com/chnyangzhen/kago-fly/pkg/helper"
 	"github.com/spf13/viper"
-	"kago.fly/pkg/constant"
-	"kago.fly/pkg/helper"
 	"os"
 	"path/filepath"
 	"strings"

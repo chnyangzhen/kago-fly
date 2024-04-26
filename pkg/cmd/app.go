@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"github.com/chnyangzhen/kago-fly/pkg/config"
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
+	"github.com/chnyangzhen/kago-fly/pkg/logger"
+	"github.com/chnyangzhen/kago-fly/pkg/server"
 	"github.com/urfave/cli/v2"
-	"kago.fly/pkg/config"
-	"kago.fly/pkg/constant"
-	"kago.fly/pkg/logger"
-	"kago.fly/pkg/server"
 	"os"
 	"sort"
 	"strconv"

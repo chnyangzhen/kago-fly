@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"kago.fly/pkg/config"
+	"github.com/chnyangzhen/kago-fly/pkg/config"
 	"net/http"
 	_ "net/http/pprof"
 )

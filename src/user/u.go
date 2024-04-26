@@ -2,12 +2,12 @@ package user
 
 import (
 	"context"
+	tidctx "github.com/chnyangzhen/kago-fly/pkg/context"
+	"github.com/chnyangzhen/kago-fly/pkg/helper"
+	"github.com/chnyangzhen/kago-fly/pkg/logger"
+	"github.com/chnyangzhen/kago-fly/pkg/response"
+	"github.com/chnyangzhen/kago-fly/pkg/server"
 	"github.com/labstack/echo/v4"
-	tidctx "kago.fly/pkg/context"
-	"kago.fly/pkg/helper"
-	"kago.fly/pkg/logger"
-	"kago.fly/pkg/response"
-	"kago.fly/pkg/server"
 )
 
 func init() {

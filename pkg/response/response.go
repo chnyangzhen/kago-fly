@@ -1,7 +1,7 @@
 package response
 
 import (
-	"kago.fly/pkg/helper"
+	"github.com/chnyangzhen/kago-fly/pkg/helper"
 )
 
 type (

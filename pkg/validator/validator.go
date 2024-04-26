@@ -1,10 +1,10 @@
 package validator
 
 import (
+	"github.com/chnyangzhen/kago-fly/pkg/helper"
+	"github.com/chnyangzhen/kago-fly/pkg/response"
 	"github.com/go-playground/validator/v10"
 	"sync"
-	"kago.fly/pkg/helper"
-	"kago.fly/pkg/response"
 )
 
 type DataValidator struct {

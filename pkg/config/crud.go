@@ -1,9 +1,9 @@
 package config
 
 import (
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
 	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/cast"
-	"kago.fly/pkg/constant"
 	"os"
 	"strings"
 	"time"

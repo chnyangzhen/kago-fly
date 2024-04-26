@@ -1,7 +1,7 @@
 package main
 
-import "kago.fly/pkg/cmd"
-import _ "kago.fly/src/user"
+import "github.com/chnyangzhen/kago-fly/pkg/cmd"
+import _ "github.com/chnyangzhen/kago-fly/src/user"
 
 func main() {
 	cmd.DefaultGo()

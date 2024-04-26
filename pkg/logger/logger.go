@@ -3,12 +3,12 @@ package logger
 import (
 	"context"
 	"fmt"
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"kago.fly/pkg/constant"
 	"os"
 )
 

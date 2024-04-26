@@ -2,8 +2,8 @@ package tidctx
 
 import (
 	"context"
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
 	"github.com/labstack/echo/v4"
-	"kago.fly/pkg/constant"
 )
 
 // InitWebTid 从echo.Context中获取tid并添加到context中

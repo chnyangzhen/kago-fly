@@ -2,9 +2,9 @@ package logger
 
 import (
 	"context"
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
 	"github.com/spf13/cast"
 	"go.uber.org/zap"
-	"kago.fly/pkg/constant"
 )
 
 // TraceLogger 带有TraceId的Logger

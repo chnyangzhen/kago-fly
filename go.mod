@@ -1,4 +1,4 @@
-module kago.fly
+module github.com/chnyangzhen/kago-fly
 
 go 1.18
 

@@ -2,8 +2,8 @@ package server
 
 import (
 	"fmt"
-	"kago.fly/pkg/constant"
-	"kago.fly/pkg/logger"
+	"github.com/chnyangzhen/kago-fly/pkg/constant"
+	"github.com/chnyangzhen/kago-fly/pkg/logger"
 	"os"
 	"os/signal"
 	"syscall"
