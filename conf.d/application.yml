@@ -1,0 +1,19 @@
+# 网关Http服务器配置
+listeners:
+  # 默认Web服务
+  web:
+    name: "gateway"
+    # 服务器绑定地址
+    address: "0.0.0.0"
+    port: "8883"
+    # 功能特性
+    features:
+      # 设置限制请求Body大小，默认为 1M
+      body_limit: "10M"
+      # 设置是否开启支持跨域访问特性，默认关闭
+      cors_enable: false
+      # 设置是否开启检查跨站请求伪造特性，默认关闭
+      csrf_enable: false
+
+echo:
+  request-id: "X-Request-Id"

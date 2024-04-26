@@ -1,0 +1,40 @@
+default:
+  level: "info"
+  development: false
+  disableCaller: false
+  disableStacktrace: false
+  encoding: "json"
+  sampling:
+    initial: 100
+    thereafter: 100
+  # encoder
+  encoderConfig:
+    messageKey: "message"
+    levelKey: "level"
+    timeKey: "time"
+    nameKey: "logger"
+    callerKey: "caller"
+    stacktraceKey: "stacktrace"
+    lineEnding: "\n"
+    levelEncoder: "capital"
+    timeEncoder: "iso8601"
+    durationEncoder: "seconds"
+    callerEncoder: "short"
+    nameEncoder: ""
+  # 与Dubbo配置的文件分离：Dubbo在init中直接初始化了ZapLogger，导致还没注册zap.Sink滚动日志运行
+  # 此日志配置为Maxwell专用，支持rolling-file滚动日志配置
+  outputPaths:
+    - "stdout"
+  errorOutputPaths:
+    - "stderr"
+  initialFields:
+
+rolling:
+  logFilePath: "./logs"
+  errorFileName: "error.log"
+  warnFileName: "warn.log"
+  infoFileName: "info.log"
+  maxSize: 20
+  maxBackups: 4
+  maxAge: 7
+  compress: false
