@@ -126,12 +126,12 @@ func (s *Server) Start() error {
 	// 服务器初始化
 	// 自定义的前置过滤器
 	go func(e *echo.Echo, routes sync.Map, waiting *sync.WaitGroup) {
-		defer waiting.Done()
 		routes.Range(func(key, value interface{}) bool {
 			r := value.(*apiRoute)
 			e.Add(r.method, r.path, r.handler, r.middleware...)
 			return true
 		})
+		waiting.Done()
 		e.Start(config.GetString("address") + ":" + config.GetString("port"))
 	}(s.Echo, s.routes, s.waiting)
 	s.waiting.Wait()
