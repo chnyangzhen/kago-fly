@@ -55,7 +55,7 @@ func NewServer() *Server {
 	webConfig := config.GetWrapper("listeners.web")
 	e := s.Echo
 
-	targetHeader := config.GetStringWithDefault("echo.request-id", constant.XRequestID)
+	targetHeader := config.GetStringWithDefault("trace.id-key", constant.XRequestID)
 	e.Use(middleware.RequestIDWithConfig(middleware.RequestIDConfig{
 		Generator: func() string {
 			return helper.Uuid()

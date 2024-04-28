@@ -1,5 +1,5 @@
 package constant
 
 const (
-	Tid         = "tid"
+	Tid = "tid"
 )

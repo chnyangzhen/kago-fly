@@ -15,5 +15,4 @@ listeners:
       # 设置是否开启检查跨站请求伪造特性，默认关闭
       csrf_enable: false
 
-echo:
-  request-id: "X-Request-Id"
+trace.id-key: ""
