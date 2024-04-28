@@ -172,12 +172,12 @@ func (s *Server) start() error {
 
 func (s *Server) StartedAfter() error {
 	for _, startedAfter := range AfterLifecycle() {
-		fmt.Printf("After lifecycle title: %s is ready.\n", startedAfter.Title())
+		logger.Infof("After lifecycle title: %s is ready.", startedAfter.Title())
 		if err := startedAfter.OnAfter(); err != nil {
-			fmt.Printf("After lifecycle title: %s error with %s\n", startedAfter.Title(), err.Error())
+			logger.Errorf("After lifecycle title: %s error with %s", startedAfter.Title(), err.Error())
 			return err
 		}
-		fmt.Printf("After lifecycle title: %s completed.\n", startedAfter.Title())
+		logger.Infof("After lifecycle title: %s completed.", startedAfter.Title())
 	}
 	return nil
 }
