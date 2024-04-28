@@ -2,13 +2,13 @@ package server
 
 import (
 	"context"
+	"sort"
 )
 
 var (
-	prepares  = make([]Preparer, 0, 8)
-	destroys  = make([]Destroyer, 0, 8)
-	shutdowns = make([]Finalizer, 0, 8)
-	afters    = make([]After, 0, 8)
+	prepares = make([]Preparer, 0, 8)
+	destroys = make([]Destroyer, 0, 8)
+	afters   = make([]After, 0, 8)
 )
 
 type (
@@ -23,13 +23,6 @@ type (
 
 	After interface {
 		OnAfter() error
-		Title() string
-	}
-
-	// Finalizer WebListener停止时，调用此函数
-	Finalizer interface {
-		// OnFinalize 当服务停止时，调用此函数
-		OnFinalize(ctx context.Context) error
 		Title() string
 	}
 
@@ -48,11 +41,6 @@ func RegisterPrepare(prepare Preparer) {
 // RegisterDestroy 注册Destroy
 func RegisterDestroy(destroy Destroyer) {
 	destroys = append(destroys, destroy)
-}
-
-// RegisterShutdown 注册Shutdown
-func RegisterShutdown(shutdown Finalizer) {
-	shutdowns = append(shutdowns, shutdown)
 }
 
 func RegisterStartedAfter(after After) {
@@ -77,12 +65,8 @@ func PrepareLifecycle() []Preparer {
 func DestroyLifecycle() []Destroyer {
 	dst := make([]Destroyer, len(destroys))
 	copy(dst, destroys)
-	return dst
-}
-
-// ShutdownLifecycle 返回Shutdown列表的副本
-func ShutdownLifecycle() []Finalizer {
-	dst := make([]Finalizer, len(shutdowns))
-	copy(dst, shutdowns)
+	sort.Slice(dst, func(i, j int) bool {
+		return i > j
+	})
 	return dst
 }

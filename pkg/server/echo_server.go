@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"github.com/chnyangzhen/kago-fly/pkg/config"
 	"github.com/chnyangzhen/kago-fly/pkg/constant"
 	"github.com/chnyangzhen/kago-fly/pkg/helper"
@@ -12,12 +13,18 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"net/http"
+	"os"
+	"os/signal"
 	"sync"
+	"syscall"
 	"time"
 )
 
 var (
-	s *Server
+	s               *Server
+	shutdownSignals = []os.Signal{os.Interrupt, os.Kill, syscall.SIGKILL, syscall.SIGSTOP,
+		syscall.SIGHUP, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGILL, syscall.SIGTRAP,
+		syscall.SIGABRT, syscall.SIGSYS, syscall.SIGTERM}
 )
 
 func init() {
@@ -33,9 +40,12 @@ type Server struct {
 
 func (s *Server) prepare() error {
 	for _, prepare := range PrepareLifecycle() {
+		logger.Infof("Prepare lifecycle title: %s is ready.", prepare.Title())
 		if err := prepare.OnPrepare(); err != nil {
+			logger.Errorf("Prepare lifecycle title: %s error with %s", prepare.Title(), err.Error())
 			return err
 		}
+		logger.Infof("Prepare lifecycle title: %s completed.", prepare.Title())
 	}
 	return nil
 }
@@ -115,7 +125,29 @@ func NewServer() *Server {
 	return s
 }
 
-func (s *Server) Start() error {
+func (s *Server) StartGraceful() {
+	quit := make(chan os.Signal, 1)
+
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				logger.Errorw("系统运行异常,即将停止,请检查!", "error", r)
+				quit <- os.Interrupt
+			}
+		}()
+		if err := s.start(); err != nil {
+			quit <- os.Interrupt
+		}
+	}()
+
+	signal.Notify(quit, shutdownSignals...)
+	sig := <-quit
+	logger.Info("receive signal: ", sig)
+
+	s.stop(10 * time.Second)
+}
+
+func (s *Server) start() error {
 	// 生命周期准备阶段
 	s.prepare()
 
@@ -140,9 +172,12 @@ func (s *Server) Start() error {
 
 func (s *Server) StartedAfter() error {
 	for _, startedAfter := range AfterLifecycle() {
+		logger.Infof("After lifecycle title: %s is ready.", startedAfter.Title())
 		if err := startedAfter.OnAfter(); err != nil {
+			logger.Errorf("After lifecycle title: %s error with %s", startedAfter.Title(), err.Error())
 			return err
 		}
+		logger.Infof("After lifecycle title: %s completed.", startedAfter.Title())
 	}
 	return nil
 }
@@ -156,24 +191,19 @@ func (s *Server) destroy(ctx context.Context) error {
 	if err != nil {
 		logger.Errorw("server shutdown error", "error", err)
 	}
-	logger.Infow("server shutdown")
-
-	for _, shutdown := range ShutdownLifecycle() {
-		if err := shutdown.OnFinalize(ctx); err != nil {
-			logger.Errorw("lifecycle shutdown error", "shutdown", shutdown, "error", err)
-		}
-	}
 
 	for _, destroy := range DestroyLifecycle() {
+		fmt.Printf("destroy title: %s is ready.\n", destroy.Title())
 		if err := destroy.OnDestroy(ctx); err != nil {
-			logger.Errorw("lifecycle destroy error", "destroy", destroy, "error", err)
+			fmt.Errorf("lifecycle destroy title: %s error: %s\n", destroy.Title(), err.Error())
+		} else {
+			fmt.Printf("destroy title: %s completed.\n", destroy.Title())
 		}
 	}
-	time.Sleep(5 * time.Second)
 	return nil
 }
 
-func (s *Server) Stop(timeout time.Duration) {
+func (s *Server) stop(timeout time.Duration) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	s.destroy(ctx)
@@ -206,7 +236,7 @@ func RegisterRoute(method, path string, handler echo.HandlerFunc, middleware ...
 	}
 	api := method + ":" + path
 	if _, ok := s.routes.Load(api); ok {
-		panic(api + " already exists")
+		panic(api + " already exists.")
 	}
 	s.routes.Store(api, route)
 }
