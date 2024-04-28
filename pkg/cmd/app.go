@@ -18,6 +18,7 @@ type App struct {
 	Version     string
 	Copyright   string
 	Description string
+	Banner      string
 }
 
 var _app = App{
@@ -25,6 +26,7 @@ var _app = App{
 	Version:     "1.0",
 	Copyright:   "(c) " + strconv.Itoa(time.Now().Year()),
 	Description: "",
+	Banner:      constant.Banner,
 }
 
 func DefaultGo() {
@@ -37,7 +39,7 @@ func Go(app App, l ...server.Lifecycle) {
 			InitViperComponent(),
 			InitZapLoggerComponent(),
 			InitLifecycle(l...),
-			RunApplication(),
+			RunApplication(app.Banner),
 		),
 	)
 	err := newApp.Run(os.Args)
@@ -115,9 +117,9 @@ func InitZapLoggerComponent() cli.ActionFunc {
 }
 
 // RunApplication 用于启动应用
-func RunApplication() cli.ActionFunc {
+func RunApplication(banner string) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
-		if err := server.Run(); err != nil {
+		if err := server.Run(banner); err != nil {
 			return err
 		}
 		return nil

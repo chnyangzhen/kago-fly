@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"github.com/chnyangzhen/kago-fly/pkg/constant"
 	"github.com/chnyangzhen/kago-fly/pkg/logger"
 )
 
@@ -24,10 +23,9 @@ func AddLifecycle(l Lifecycle) {
 	}
 }
 
-func Run() error {
-	fmt.Printf(constant.Banner)
+func Run(banner string) error {
+	fmt.Println(banner)
 	server := NewServer()
-	server.StartGraceful()
 	server.StartGraceful()
 	return nil
 }
